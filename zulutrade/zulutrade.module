@@ -1,0 +1,106 @@
+<?php
+
+	require_once 'zulutrade.helpers.inc';
+
+	function zulutrade_action_info ()
+	{
+		return array
+		(
+	    'zulutrade_create_zulutrade_account' => array
+	    (
+	      'label'					=> t('Create ZuluTrade account'),
+	      'type'					=> 'node',
+	      'configurable'	=> FALSE,
+	      'triggers'			=> array ('any'),
+			),
+		);
+	}
+	
+	function zulutrade_create_zulutrade_account (&$entity, $context = array())
+	{
+		require_once 'zulutrade.node-demo.inc';
+
+		zulutrade_node_demo_create ($entity, true);
+	}
+	
+
+
+	function zulutrade_demo_node_validate (&$form, &$form_state)
+	{
+		$email = &$form_state ['values'] ['field_email'] ['und'] [0] ['value'];
+		
+		$email = str_replace ('*', uniqid ('', true), $email);
+	}
+	 
+	function zulutrade_form_alter (&$form, &$form_state, $form_id)
+	{
+		if ($form_id != 'demo_node_form')
+			return;
+		
+		$form ['#validate'] [] = 'zulutrade_demo_node_validate';
+	}
+
+	/**
+	 * Generates configuration link in the /admin/config page
+	 * @return array
+	 */
+	function zulutrade_menu ()
+	{
+		$items = array (
+			'admin/config/zulutrade' => array
+			(
+			  'title'							=> 'ZuluTrade',
+			 	'access arguments'	=> array ('configure zulutrade'),
+				'page callback'			=> 'zulutrade_admin_config_page',
+			 	'weight'						=> -101,
+			 	'position'					=> 'right',
+				'file'							=> 'zulutrade.admin.inc'
+			),
+		
+			'admin/config/zulutrade/settings' => array
+			(
+			  'title'							=> 'ZuluTrade',
+			 	'access arguments'	=> array ('configure zulutrade'),
+				'page callback'			=> 'zulutrade_admin_config_page',
+				'file'							=> 'zulutrade.admin.inc'
+		  )
+		);
+	
+		return $items;
+	}
+
+	/**
+	 * Retrieves configuration from the database
+	 * @return stdClass Configuration object
+	 */
+	function zulutrade_get_config ()
+	{
+		return (object)array (
+//		'userName'			=> variable_get ('zulutrade_userName',			null),
+		);
+	}
+	
+	/**
+	 * Called when module is being enabled
+	 */
+	function zulutrade_enable ()
+	{
+		// Nothing here
+	}
+
+	/**
+	 * Declares permissions used by module
+	 * @return array
+	 */
+	function zulutrade_permission ()
+	{
+		return array ('configure zulutrade' => array ('title' => t('Change ZuluTrade settings')));
+	}
+	
+	function zulutrade_cron ()
+	{
+		require_once 'feed-import.php';
+	}
+	
+
+?>

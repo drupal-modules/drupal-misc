@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Simpletest unit test for "ZuluTrade" module
+ */
+
+class zulutradeTestCase extends DrupalWebTestCase {
+
+  /**
+   * Implements getInfo().
+   */
+  public static function getInfo() {
+    return array (
+      'name' => t('ZuluTrade test'),
+      'description' => t('Tests related to zulutrade module'),
+      'group' => t('ZuluTrade'),
+    );
+  }
+
+  public function setUp()
+	{
+    parent::setUp ('deathbycaptcha');
+  }
+
+}
+
+?>

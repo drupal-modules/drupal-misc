@@ -1,0 +1,6 @@
+name = ZuluTrade General Module
+description = General ZuluTrade functionality
+core = 7.x
+version = 0.1-dev
+files[] = zulutrade.test
+package = Forex

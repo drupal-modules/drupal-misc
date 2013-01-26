@@ -1,0 +1,32 @@
+<?php
+
+	/**
+	 * Adding "Currencies" vocabulary terms (USD)
+	 */
+	function zulutrade_update_1 ()
+	{
+		$query =
+<<<EOT
+			REPLACE INTO {taxonomy_term_data} (`tid`, `vid`, `name`, `description`, `format`, `weight`) VALUES (1, 2, 'USD', '', 'plain_text', 0);
+			REPLACE INTO {taxonomy_term_hierarchy} (`tid`, `parent`) VALUES (1, 0);
+EOT;
+	
+		foreach (explode ("\n", $query) as $row)
+			db_query ($row);
+	}
+	
+	/**
+	 * Adding "demo" nodes trigger assignment
+	 */
+	function zulutrade_update_2 ()
+	{
+		$query =
+<<<EOT
+			REPLACE INTO {trigger_assignments} (`hook`, `aid`, `weight`) VALUES ('workflow-demo-1', 'zulutrade_create_zulutrade_account', 1);
+EOT;
+	
+		foreach (explode ("\n", $query) as $row)
+			db_query ($row);
+	}
+
+?>
